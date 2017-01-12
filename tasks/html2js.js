@@ -1,5 +1,13 @@
 /*
  * grunt-html-convert
+ * https://github.com/adammorris/grunt-html-convert
+ *
+ * Copyright (c) 2013 Adam Morris
+ * Licensed under the MIT license.
+ *
+ * Fork from:
+ *
+ * grunt-html-convert
  * https://github.com/soundstep/grunt-html-convert
  *
  * Copyright (c) 2013 Romuald Quantin
