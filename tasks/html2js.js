@@ -99,7 +99,7 @@ var camelCased = function(str) {
 
     var content = escapeContent(grunt.file.read(filepath), quoteChar, indentString, indentGlobal, ignore);
 
-    var internalName = moduleName.replace(/^.*(\\|\/|\:)/, '').replace('.html', '')
+    var internalName = moduleName.replace(/^.*(\\|\/|\:)/, '').replace('.html', '').replace('tmpl.', '').replace('.', '_')
     var module = indentGlobal + targetModule + internalName +
       ' = _.template(' + quoteChar + content + quoteChar + ');\n';
 
