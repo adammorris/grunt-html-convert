@@ -59,7 +59,8 @@ module.exports = function(grunt) {
   var escapeContent = function(content, quoteChar, indentString, indentGlobal, ignore) {
     var bsRegexp = new RegExp('\\\\', 'g');
     var quoteRegexp = new RegExp('\\' + quoteChar, 'g');
-    var nlReplace = '\\n' + quoteChar + ' +\n' + indentGlobal + indentString + quoteChar;
+    var nlReplace = ''
+    // var nlReplace = '\\n' + quoteChar + ' +\n' + indentGlobal + indentString + quoteChar;
     var replace = function ( content ) {
         return content.replace(bsRegexp, '\\\\').replace(quoteRegexp, '\\' + quoteChar).replace(/\r?\n/g, nlReplace);
     };
@@ -98,9 +99,13 @@ var camelCased = function(str) {
 
     var content = escapeContent(grunt.file.read(filepath), quoteChar, indentString, indentGlobal, ignore);
 
-    var module = indentGlobal + camelCased(targetModule) + '[' + quoteChar + moduleName +
-      quoteChar + '] = ' + quoteChar +  content +
-       quoteChar + ';\n';
+    var internalName = moduleName.replace(/^.*(\\|\/|\:)/, '').replace('.html', '')
+    var module = indentGlobal + targetModule + internalName +
+      ' = _.template(' + quoteChar + content + quoteChar + ');\n';
+
+//    var module = indentGlobal + camelCased(targetModule) + '[' + quoteChar + moduleName +
+//      quoteChar + '] = ' + quoteChar +  content +
+//       quoteChar + ';\n';
 
 //    var module = 'angular.module(' + quoteChar + moduleName +
 //      quoteChar + ', []).run([' + quoteChar + '$templateCache' + quoteChar + ', function($templateCache) ' +
@@ -165,18 +170,18 @@ var camelCased = function(str) {
       var bundle = "";
       var fileHeader = options.fileHeaderString !== '' ? options.fileHeaderString + '\n' : '';
       //Allow a 'no targetModule if module is null' option
-      if (targetModule) {
-          bundle += options.indentGlobal;
-          if (options.target === 'js') {
-              bundle += 'var ';
-          }
-        bundle += camelCased(targetModule) + " = {}";
-        if (options.target === 'js') {
-          bundle += ';';
-        }
-
-        bundle += "\n\n";
-      }
+      // if (targetModule) {
+      //     bundle += options.indentGlobal;
+      //     if (options.target === 'js') {
+      //         bundle += 'var ';
+      //     }
+      //   bundle += camelCased(targetModule) + " = {}";
+      //   if (options.target === 'js') {
+      //     bundle += ';';
+      //   }
+      //
+      //   bundle += "\n\n";
+      // }
         var prefix = options.prefix || '';
         var suffix = options.suffix || '';
 
