@@ -57,12 +57,14 @@ module.exports = function(grunt) {
   };
   
   var escapeContent = function(content, quoteChar, indentString, indentGlobal, ignore) {
+    var commentRegexp = new RegExp('<!--(.*?)-->', 'g');
     var bsRegexp = new RegExp('\\\\', 'g');
     var quoteRegexp = new RegExp('\\' + quoteChar, 'g');
     var nlReplace = ''
     // var nlReplace = '\\n' + quoteChar + ' +\n' + indentGlobal + indentString + quoteChar;
     var replace = function ( content ) {
-        return content.replace(bsRegexp, '\\\\').replace(quoteRegexp, '\\' + quoteChar).replace(/\r?\n/g, nlReplace);
+        content = content.replace(bsRegexp, '\\\\').replace(quoteRegexp, '\\' + quoteChar).replace(/\r?\n/g, nlReplace).replace(commentRegexp, '');
+        return content.trim();
     };
     if( _isIgnoreDefined( ignore ) ) {
         return _ignore( content, ignore, replace );
@@ -99,7 +101,7 @@ var camelCased = function(str) {
 
     var content = escapeContent(grunt.file.read(filepath), quoteChar, indentString, indentGlobal, ignore);
 
-    var internalName = moduleName.replace(/^.*(\\|\/|\:)/, '').replace('.html', '').replace('tmpl.', '').replace('.', '_')
+    var internalName = moduleName.replace(/^.*(\\|\/|\:)/, '').replace('.html', '').replace('tmpl.', '').replace(/\./g, '_')
     var module = indentGlobal + targetModule + internalName +
       ' = _.template(' + quoteChar + content + quoteChar + ');\n';
 
